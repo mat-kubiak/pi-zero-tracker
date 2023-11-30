@@ -1,0 +1,14 @@
+# testenv
+testenv/__pycache__/
+testenv/include/
+testenv/man/
+testenv/share/
+testenv/dist-info/
+testenv/*.dist-info/
+testenv/*.egg-info/
+testenv/scripts/
+testenv/lib/python*/site-packages/pip/_vendor/requests/
+
+# others
+__pycache__
+log

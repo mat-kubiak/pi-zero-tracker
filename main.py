@@ -12,7 +12,7 @@ class ScanDelegate(DefaultDelegate):
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if isNewDev or isNewData:
             beacon_info = f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, Name: {dev.getValueText(9)}, UUID: {dev.addr}, RSSI: {dev.rssi}"
-            if dev.getValueText(9) == 'J3bane_G0wno':
+            if dev.getValueText(9) == 'iNode_Bacon':
                 print(beacon_info)
                 with open("beacon_data.txt", "a") as file:
                     file.write(beacon_info + "\n")

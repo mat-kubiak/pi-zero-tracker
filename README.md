@@ -26,16 +26,17 @@ python3 toolbox.py [additional arguments]
 
 ### How to use
 ```
-usage: toolbox [-h] [-e EXECUTE] [-t TARGET] [-n NETWORK]
+usage: toolbox [-h] [-e EXECUTE] [-t TARGET] [-n NETWORK] [-r]
 
 Command utility to control pi trackers in the local network.
 
 options:
   -h, --help            show this help message and exit
   -e EXECUTE, --execute EXECUTE
-                        execute a script by name. If empty, will open the console.
+                        execute a script by name, normally found in the 'scripts' directory. If empty, will open the console.
   -t TARGET, --target TARGET
                         target hostnames separated by spaces. 'all' by default, targets all found trackers.
   -n NETWORK, --network NETWORK
                         network ip range to scan for trackers.
+  -r, --rebuild_cache   attempts to rebuild tracker ip cache, stored in the 'trackers.json' file.
 ```

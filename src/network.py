@@ -22,3 +22,9 @@ def execute_ssh(host, user, password, command):
     c.close()
     
     return result
+
+def get_local_range():
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    network_range = '.'.join(ip_address.split('.')[:-1]) + '.0/24'
+    return network_range

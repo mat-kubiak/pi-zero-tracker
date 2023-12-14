@@ -104,6 +104,11 @@ def main():
     for target in target_names:
         print(f'{target}:')
         print(results[target])
+    
+    with open('archive/output.txt', 'w') as file:
+        for target in target_names:
+            file.write(f'{target}:\n')
+            file.write(results[target])
 
 if __name__ == '__main__':
     main()

@@ -33,6 +33,15 @@ def get_script_names(path):
             script_files.append(root)
     return script_files
 
+def loadFile(path):
+    text = ''
+    with open(path, 'r') as file:
+        lines = file.readlines()
+    
+    for line in lines:
+        text += line
+    return text
+
 def read_json(path):
     with open(path, 'r') as file:
         data = json.load(file)

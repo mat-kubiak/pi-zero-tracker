@@ -16,8 +16,8 @@ def scan_local_network(range):
     nm.scan(hosts=range, arguments='-sn -R')
     return nm.all_hosts()
 
-def execute_ssh(host, user, password, command):
-    c = fabric.Connection(host=host, user=user, connect_kwargs={'password': password})
+def execute_ssh(host_ip, username, password, command):
+    c = fabric.Connection(host=host_ip, user=username, connect_kwargs={'password': password})
     result = c.run(command, hide=True)
     c.close()
     

@@ -11,13 +11,14 @@ class ScanDelegate(DefaultDelegate):
 
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if isNewDev or isNewData:
-            beacon_info = f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, Name: {dev.getValueText(9)}, UUID: {dev.addr}, RSSI: {dev.rssi}"
+            # beacon_info = f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, Name: {dev.getValueText(9)}, UUID: {dev.addr}, RSSI: {dev.rssi}"
+            beacon_info = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{dev.rssi}"
             if dev.getValueText(9) == 'iNode_Bacon':
                 print(beacon_info)
                 with open("beacon_data.txt", "a") as file:
                     file.write(beacon_info + "\n")
 
-scan_duration = 60  # 2 minute
+scan_duration = 120  # 2 minute
 scanner = Scanner().withDelegate(ScanDelegate())
 start_time = time.time()
 while time.time() - start_time < scan_duration:

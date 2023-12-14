@@ -86,7 +86,7 @@ def main():
 
     command = ''
     if args.command != '':
-        command = args.command
+        command = f'cd pi-zero-tracker && {args.command}'
     else:
         command = loadFile(os.path.join(paths.script_dir, str(args.execute) + '.sh'))
 

@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, threading
 
 class paths:
     parent_dir = os.path.dirname(os.path.realpath(__file__))
@@ -43,6 +43,14 @@ def get_tracker_ips():
         write_json(paths.trackers_file, open_hosts)
     return tracker_ips
 
+def execute_remotely(results, target, target_ip, username, password, command):
+    print(f'Target {target} started executing')
+    try:
+        results[target] = execute_ssh(target_ip, username, password, command).stdout
+    except Exception as e:
+        results[target] = f'Error: {e}'
+    print(f'Target {target} finished executing')
+
 def main():
     # initialize
     global args, password
@@ -78,12 +86,16 @@ def main():
 
     command = loadFile(os.path.join(paths.script_dir, str(args.execute) + '.sh'))
 
+    threads = []
     results = {}
     for target in target_names:
-        try:
-            results[target] = execute_ssh(tracker_ips[target], 'admin', password, command).stdout
-        except Exception as e:
-            results[target] = f'Error: {e}'
+        t = threading.Thread(target=execute_remotely, args=(results, target, tracker_ips[target], 'admin', password, command))
+        threads.append(t)
+        t.start()
+
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
     
     for target in target_names:
         print(f'{target}:')

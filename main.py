@@ -17,7 +17,7 @@ class ScanDelegate(DefaultDelegate):
                 with open("beacon_data.txt", "a") as file:
                     file.write(beacon_info + "\n")
 
-scan_duration = 120  # 2 minute
+scan_duration = 60  # 2 minute
 scanner = Scanner().withDelegate(ScanDelegate())
 start_time = time.time()
 while time.time() - start_time < scan_duration:

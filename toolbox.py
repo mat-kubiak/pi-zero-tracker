@@ -84,7 +84,11 @@ def main():
     else:
         target_names = args.target.split()
 
-    command = loadFile(os.path.join(paths.script_dir, str(args.execute) + '.sh'))
+    command = ''
+    if args.command != '':
+        command = args.command
+    else:
+        command = loadFile(os.path.join(paths.script_dir, str(args.execute) + '.sh'))
 
     threads = []
     results = {}

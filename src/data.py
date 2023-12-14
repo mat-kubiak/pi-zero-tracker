@@ -17,10 +17,15 @@ def parse_cli():
         prog='toolbox',
         description='Command utility to control pi trackers in the local network.')
     parser.add_argument('-e', '--execute', default='', help='execute a script by name, normally found in the \'scripts\' directory. If empty, will open the console.')
+    parser.add_argument('-c', '--command', default='', help='the command to execute on targets. Will overwrite the --execute argument.')
     parser.add_argument('-t', '--target', default='all', help='target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
     parser.add_argument('-n', '--network', default='', help='network ip range to scan for trackers.')
     parser.add_argument('-r', '--rebuild_cache', action='store_true', help='attempts to rebuild tracker ip cache, stored in the \'trackers.json\' file.')
     args = parser.parse_args()
+
+    if args.command != '':
+        args.execute = ''
+
     return args
 
 def get_script_names(path):

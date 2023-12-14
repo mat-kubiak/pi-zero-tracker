@@ -11,7 +11,13 @@ def has_internet_access():
     except socket.error:
         return False  # Connection failed, no internet access
 
-def scan_local_network(range):
+def get_network_range():
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    network_range = '.'.join(ip_address.split('.')[:-1]) + '.0/24'
+    return network_range
+
+def get_network_addresses(range):
     nm = nmap.PortScanner()
     nm.scan(hosts=range, arguments='-sn -R')
     return nm.all_hosts()
@@ -22,9 +28,3 @@ def execute_ssh(host_ip, username, password, command):
     c.close()
     
     return result
-
-def get_local_range():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    network_range = '.'.join(ip_address.split('.')[:-1]) + '.0/24'
-    return network_range

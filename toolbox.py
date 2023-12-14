@@ -12,36 +12,24 @@ sys.path.insert(0, paths.src_dir)
 from data import *
 from network import *
 
-def get_tracker_ips():
-    tracker_ips = {}
-    if not args.rebuild_cache:
+def find_trackers():
+    if args.network == None:
+        args.network = get_network_range()
+    
+    print(f'Scanning for devices in range {args.network}...')
+    hosts = get_network_addresses(args.network)
+    print(f'Discovered ip addresses: {hosts}')
+
+    identified = {}
+    for host in hosts:
+        result = ''
         try:
-            tracker_ips = read_json(paths.trackers_file)
+            hostname = execute_ssh(host, 'admin', password, 'hostname').stdout.strip()
+            print(f'Found remote hostname: {hostname} for {host}')
+            identified[hostname] = host
         except Exception as e:
-            print('Failed to load cache, attempting to rebuild')
-            args.rebuild_cache = True
-
-    if args.rebuild_cache:
-        if args.network == '':
-            args.network = get_local_range()
-        print(f'Using network range: {args.network}')
-
-        print('Scanning for devices...')
-        hosts = scan_local_network(args.network)
-        print(f'Discovered ip addresses: {hosts}')
-
-        open_hosts = {}
-        for host in hosts:
-            result = ''
-            try:
-                hostname = execute_ssh(host, 'admin', password, 'hostname').stdout.strip()
-                print("Found remote hostname:", hostname)
-                open_hosts[hostname] = host
-            except Exception as e:
-                print(e)
-        tracker_ips = open_hosts
-        write_json(paths.trackers_file, open_hosts)
-    return tracker_ips
+            print(f'Host {host} not responding')
+    return identified
 
 def execute_remotely(results, target, target_ip, username, password, command):
     print(f'Target {target} started executing')
@@ -52,48 +40,64 @@ def execute_remotely(results, target, target_ip, username, password, command):
     print(f'Target {target} finished executing')
 
 def main():
-    # initialize
+    # INITIALIZE
+
     global args, password
 
     args = parse_cli()
-    password = read_password(paths.password_file)
-    script_names = get_script_names(paths.script_dir)
+    password = read_file(paths.password_file)
+    scripts = get_dir_files(paths.script_dir)
+
+    if args.list_scripts:
+        print(f'Available scripts: {scripts}')
+        exit(0)
+
+    if args.script != None and args.script not in get_dir_files(paths.script_dir):
+        print(f'Error: unable to find \'{args.script}\' script')
+        print(f'Available scripts: {scripts}')
+        exit(1)
 
     if not has_internet_access():
         print('Error: please connect to the internet!')
         exit(1)
     
-    if args.execute != '' and args.execute not in get_script_names(paths.script_dir):
-        print(f'Error: unable to find \'{args.execute}\' script')
-        print(f'Available scripts: {script_names}')
+    # DISCOVER TRACKERS
+
+    trackers = {}
+    if not args.rebuild_cache:
+        try:
+            trackers = read_json_file(paths.trackers_file)
+        except Exception as e:
+            print('Failed to load cache, attempting to rebuild')
+            args.rebuild_cache = True
+    if args.rebuild_cache:
+        trackers = find_trackers()
+    
+    if not trackers:
+        print('There are no known trackers, exiting.')
         exit(1)
+    print(f'Found trackers: {trackers}')
+    write_json_file(paths.trackers_file, trackers)
 
-    # discover trackers
+    # QUERY
 
-    tracker_ips = get_tracker_ips()
-    if not tracker_ips:
-        print('Fatal Error: could not load or discover tracker ips')
-        exit(1)
-    print('Tracker ips loaded successfully:')
-    print(tracker_ips)
+    targets = args.targets
+    if 'all' in args.targets:
+        targets = trackers.keys()
 
-    # execute command
-    target_names = []
-    if args.target == 'all':
-        target_names = tracker_ips.keys()
-    else:
-        target_names = args.target.split()
-
-    command = ''
-    if args.command != '':
+    if args.dummy:
+        print('I\'m doing nothing')
+        exit(0)
+    elif args.script:
+        command = read_file(os.path.join(paths.script_dir, str(args.script) + '.sh'))
+    elif args.command:
         command = f'cd pi-zero-tracker && {args.command}'
-    else:
-        command = loadFile(os.path.join(paths.script_dir, str(args.execute) + '.sh'))
+    
 
     threads = []
     results = {}
-    for target in target_names:
-        t = threading.Thread(target=execute_remotely, args=(results, target, tracker_ips[target], 'admin', password, command))
+    for target in targets:
+        t = threading.Thread(target=execute_remotely, args=(results, target, trackers[target], 'admin', password, command))
         threads.append(t)
         t.start()
 
@@ -101,10 +105,10 @@ def main():
     for thread in threads:
         thread.join()
     
-    for target in target_names:
+    for target in targets:
         print(f'{target}:')
-        print(results[target])
-    
+        print(f'{results[target]}\n')
+
     with open('archive/output.txt', 'w') as file:
         for target in target_names:
             file.write(f'{target}:\n')

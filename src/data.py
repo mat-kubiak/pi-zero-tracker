@@ -1,34 +1,29 @@
 import argparse, os, json
 
-def read_password(path):
-    password = ''
-    if not os.path.exists(path):
-        print('Error: \'{path}\' file missing!')
-        exit(1)
-    with open(path, 'r') as file:
-        password = file.read().strip()
-    if password == '':
-        print('Error: password cannot be empty!')
-        exit(1)
-    return password
-
 def parse_cli():
     parser = argparse.ArgumentParser(
-        prog='toolbox',
-        description='Command utility to control pi trackers in the local network.')
-    parser.add_argument('-e', '--execute', default='', help='execute a script by name, normally found in the \'scripts\' directory. If empty, will open the console.')
-    parser.add_argument('-c', '--command', default='', help='the command to execute on targets. Will overwrite the --execute argument.')
-    parser.add_argument('-t', '--target', default='all', help='target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
-    parser.add_argument('-n', '--network', default='', help='network ip range to scan for trackers.')
-    parser.add_argument('-r', '--rebuild_cache', action='store_true', help='attempts to rebuild tracker ip cache, stored in the \'trackers.json\' file.')
+        prog='toolbox.py',
+        description='Command-line utility for controlling bluetooth trackers in the local network.',
+        add_help=False)
+    
+    ops = parser.add_argument_group('Remote Operations').add_mutually_exclusive_group()
+    ops.required = True
+    ops.add_argument('-s', '--script', help='Execute a script by name, normally found in the \'scripts\' directory.')
+    ops.add_argument('-c', '--command', help='Executes a custom command.')
+    ops.add_argument('-d', '--dummy', action='store_true', help='Do nothing.')
+
+    opts = parser.add_argument_group('Options')
+    opts.add_argument('-t', '--targets', action='append', default='all', help='Target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
+    opts.add_argument('-n', '--network', help='Overwrites network ip range used for scaning for trackers.')
+
+    opts.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
+    opts.add_argument('-l', '--list_scripts', action='store_true', help='List all available scripts and exit.')
+    opts.add_argument('-r', '--rebuild_cache', action='store_true', help='Forces to rebuild tracker ip cache, stored in the \'trackers.json\' file.')
+
     args = parser.parse_args()
-
-    if args.command != '':
-        args.execute = ''
-
     return args
 
-def get_script_names(path):
+def get_dir_files(path):
     script_files = []
     for file_name in os.listdir(path):
         # Check if the path is a file (not a directory)
@@ -38,20 +33,32 @@ def get_script_names(path):
             script_files.append(root)
     return script_files
 
-def loadFile(path):
+def read_file(path):
+    try:
+        with open(path, 'r') as file:
+            lines = file.readlines()
+    except Exception as e:
+        print(f'Error: {e}')
+        exit(1)
+
     text = ''
-    with open(path, 'r') as file:
-        lines = file.readlines()
-    
     for line in lines:
         text += line
     return text
 
-def read_json(path):
-    with open(path, 'r') as file:
-        data = json.load(file)
+def read_json_file(path):
+    try:
+        with open(path, 'r') as file:
+            data = json.load(file)
+    except Exception as e:
+        print(f'Error: {e}')
+        exit(1)
     return data
 
-def write_json(path, data):
-    with open(path, 'w') as file:
-        json.dump(data, file, indent=4)
+def write_json_file(path, data):
+    try:
+        with open(path, 'w') as file:
+            json.dump(data, file, indent=4)
+    except Exception as e:
+        print(f'Error: {e}')
+        exit(1)

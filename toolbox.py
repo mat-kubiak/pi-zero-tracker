@@ -4,6 +4,7 @@ class paths:
     parent_dir = os.path.dirname(os.path.realpath(__file__))
     src_dir = os.path.join(parent_dir, 'src')
     script_dir = os.path.join(parent_dir, 'scripts')
+    archive_dir = os.path.join(parent_dir, 'archive')
 
     password_file = os.path.join(parent_dir, 'password.txt')
     trackers_file = os.path.join(parent_dir, 'trackers.json')
@@ -107,7 +108,10 @@ def main():
         print(f'{target}:')
         print(f'{results[target]}\n')
 
-    with open('archive/output.txt', 'w') as file:
+    if not os.path.exists(paths.archive_dir):
+        os.makedirs(paths.archive_dir)
+
+    with open(os.path.join(paths.archive_dir, 'output.txt'), 'w') as file:
         for target in targets:
             file.write(f'{target}:\n')
             file.write(results[target])

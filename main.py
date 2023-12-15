@@ -22,7 +22,7 @@ class ScanDelegate(DefaultDelegate):
         uuid = dev.addr
         rssi = dev.rssi
 
-        report = f'{timestamp}{self.sepr}{name}{self.sepr}{uuid}{self.sepr}{rssi}\n'
+        report = f'{timestamp}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}\n'
 
         print(report)
         with open("beacon_data.txt", "a") as file:

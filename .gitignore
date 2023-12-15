@@ -12,3 +12,5 @@ testenv/lib/python*/site-packages/pip/_vendor/requests/
 # others
 __pycache__
 log
+gitlog
+beacon_data.txt

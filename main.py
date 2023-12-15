@@ -39,7 +39,7 @@ class info:
 
 def parse_cli():
     parser = argparse.ArgumentParser(
-        prog='pi-tracker',
+        prog='main.py',
         description='Bluetooth tracker software for raspberry pi devices.')
 
     parser.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default.')
@@ -64,7 +64,6 @@ def main():
     while time.time() - start_time < float(args.duration):
         devices = scanner.scan(1)
         time.sleep(float(args.pause))
-
 
 if __name__ == '__main__':
     main()

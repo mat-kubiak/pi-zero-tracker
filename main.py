@@ -6,7 +6,7 @@ from bluepy.btle import Scanner, DefaultDelegate
 class ScanDelegate(DefaultDelegate):
     def __init__(self, inc_date, white_ls, sepr):
         DefaultDelegate.__init__(self)
-        self.time_format = '%Y-%m-%d %H:%M:%S' if inc_date else '%H:%M:%S'
+        self.time_format = '%Y-%m-%d %H:%M:%S:%MS' if inc_date else '%H:%M:%S'
         self.whitelist = white_ls
         self.separator = sepr
     
@@ -18,11 +18,12 @@ class ScanDelegate(DefaultDelegate):
             return
 
         timestamp = datetime.now().strftime(self.time_format)
+        milliseconds = datetime.now().microsecond // 1000
         name = dev.getValueText(9)
         uuid = dev.addr
         rssi = dev.rssi
 
-        report = f'{timestamp}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}'
+        report = f'{timestamp}:{milliseconds}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}'
 
         print(report)
         with open("beacon_data.txt", "a") as file:

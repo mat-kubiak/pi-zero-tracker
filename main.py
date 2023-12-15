@@ -44,7 +44,7 @@ def parse_cli():
     parser.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default.')
     parser.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
     parser.add_argument('-w', '--whitelist', default='iNode_Bacon', help='Whitelist of devices. If empty, will catch all. \'iNode_Bacon\' by default.')
-    parser.add_argument('-dt', '--date', action='store_true' help='Includes date in output records.')
+    parser.add_argument('-dt', '--date', action='store_true', help='Includes date in output records.')
     parser.add_argument('-s', '--separator', default=':', help='Separator between values in a single entry. \':\' by default.')
 
     args = parser.parse_args()

@@ -26,28 +26,35 @@ python3 toolbox.py [additional arguments]
 
 ### How to use
 ```
-usage: toolbox [-h] [-e EXECUTE] [-c COMMAND] [-t TARGET] [-n NETWORK] [-r]
+usage: toolbox.py (-s SCRIPT | -c COMMAND | -d) [-t TARGETS] [-n NETWORK] [-h] [-l] [-r]
 
-Command utility to control pi trackers in the local network.
+Command-line utility for controlling bluetooth trackers in the local network.
 
-options:
-  -h, --help            show this help message and exit
-  -e EXECUTE, --execute EXECUTE
-                        execute a script by name, normally found in the 'scripts' directory. If empty, will open the console.
+Remote Operations:
+  -s SCRIPT, --script SCRIPT
+                        Execute a script by name, normally found in the 'scripts' directory.
   -c COMMAND, --command COMMAND
-                        the command to execute on targets. Will overwrite the --execute argument.
-  -t TARGET, --target TARGET
-                        target hostnames separated by spaces. 'all' by default, targets all found trackers.
+                        Executes a custom command.
+  -d, --dummy           Do nothing.
+
+Options:
+  -t TARGETS, --targets TARGETS
+                        Target hostnames separated by spaces. 'all' by default, targets all found trackers.
   -n NETWORK, --network NETWORK
-                        network ip range to scan for trackers.
-  -r, --rebuild_cache   attempts to rebuild tracker ip cache, stored in the 'trackers.json' file.
+                        Overwrites network ip range used for scaning for trackers.
+  -h, --help            Show this help message and exit.
+  -l, --list_scripts    List all available scripts and exit.
+  -r, --rebuild_cache   Forces to rebuild tracker ip cache, stored in the 'trackers.json' file.
 ```
 
-### Main Flow
+## Example uses
 
-During its execution, the app undergoes four steps:
+``` bash
+python3 toolbox.py -s execute # run the `execute` script on all found trackers (executes main.py)
 
-1. __Initialization__ - parses cli input and initializes ssh connection manager
-2. __Tracker Discovery__ - attempts to load trackers from trackers.json, if failed or forced, rebuilds it by discovering trackers from network
-3. __Execution__ - either executes the specified script, or opens a console
-4. __Finalization__ - closes all ssh connections and exits the app
+python3 toolbox.py -ld # list all scripts
+
+python3 toolbox.py -c 'ls -al' # run the `ls -al` command on all found trackers (working dir is `/home/admin/pi-zero-tracker`)
+
+python3 toolbox.py -rd # rebuild tracker ip cache
+```

@@ -81,9 +81,7 @@ def main():
 
     # QUERY
 
-    targets = args.targets
-    if 'all' in args.targets:
-        targets = trackers.keys()
+    targets = trackers.keys() if args.targets == 'all' else args.targets.split()
 
     if args.dummy:
         print('I\'m doing nothing')
@@ -110,7 +108,7 @@ def main():
         print(f'{results[target]}\n')
 
     with open('archive/output.txt', 'w') as file:
-        for target in target_names:
+        for target in targets:
             file.write(f'{target}:\n')
             file.write(results[target])
 

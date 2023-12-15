@@ -13,7 +13,7 @@ def parse_cli():
     ops.add_argument('-d', '--dummy', action='store_true', help='Do nothing.')
 
     opts = parser.add_argument_group('Options')
-    opts.add_argument('-t', '--targets', action='append', default='all', help='Target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
+    opts.add_argument('-t', '--targets', default='all', help='Target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
     opts.add_argument('-n', '--network', help='Overwrites network ip range used for scaning for trackers.')
 
     opts.add_argument('-h', '--help', action='help', help='Show this help message and exit.')

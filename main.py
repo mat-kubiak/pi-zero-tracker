@@ -14,7 +14,7 @@ class ScanDelegate(DefaultDelegate):
         if not isNewDev and not isNewData:
             return
 
-        if self.whitelist != None and not dev.getValueText(9) in self.whitelist:
+        if self.whitelist != None and not dev.getValueText(9) in self.whitelist.split():
             return
 
         timestamp = datetime.now().strftime(self.time_format)
@@ -46,7 +46,7 @@ def parse_cli():
     parser.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
     parser.add_argument('-w', '--whitelist', help='Whitelist of devices. If empty (default), will catch all.')
     parser.add_argument('-dt', '--date', action='store_true', help='Includes date in output records.')
-    parser.add_argument('-s', '--separator', default=':', help='Separator between values in a single entry. \':\' by default.')
+    parser.add_argument('-s', '--separator', default=' ', help='Separator between values in a single entry. Space by default.')
 
     args = parser.parse_args()
     return args
@@ -56,8 +56,8 @@ def main():
     args = parse_cli()
     
     with open("beacon_data.txt", "a") as file:
-            file.write(f'\nReport for {info.hostname} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
- 
+        file.write(f'\nReport for {info.hostname} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+
     scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist, args.separator))
     start_time = time.time()
     

@@ -4,10 +4,11 @@ from datetime import datetime
 from bluepy.btle import Scanner, DefaultDelegate
 
 class ScanDelegate(DefaultDelegate):
-    def __init__(self, inc_date, white_ls):
+    def __init__(self, inc_date, white_ls, sepr):
         DefaultDelegate.__init__(self)
         self.time_format = '%Y-%m-%d %H:%M:%S' if inc_date else '%H:%M:%S'
         self.whitelist = white_ls
+        self.separator = sepr
     
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if not isNewDev and not isNewData:
@@ -21,7 +22,7 @@ class ScanDelegate(DefaultDelegate):
         uuid = dev.addr
         rssi = dev.rssi
 
-        report = f'{timestamp}\n{name}\n{uuid}\n{rssi}\n'
+        report = f'{timestamp}{self.sepr}{name}{self.sepr}{uuid}{self.sepr}{rssi}\n'
 
         print(report)
         with open("beacon_data.txt", "a") as file:
@@ -44,6 +45,7 @@ def parse_cli():
     parser.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds.')
     parser.add_argument('-w', '--whitelist', default='iNode_Bacon', help='Whitelist of devices. If empty, will catch all.')
     parser.add_argument('-dt', '--date', help='Includes date in output records.')
+    parser.add_argument('-s', '--separator', default=':', help='Separator between values in a single entry.')
 
     args = parser.parse_args()
     return args
@@ -55,7 +57,7 @@ def main():
     with open("beacon_data.txt", "a") as file:
             file.write(f'\nReport for {info.hostname} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
  
-    scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist))
+    scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist, args.separator))
     start_time = time.time()
     
     while time.time() - start_time < float(args.duration):

@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import FancyArrowPatch
 
-
 def normalize_2d_vector(x, y):
     magnitude = math.sqrt(x ** 2 + y ** 2)  # Calculate the magnitude of the vector
 
@@ -109,7 +108,8 @@ def plot_routes(routes):
         ax.text(text_x, text_y, str(count), ha='center', va='center', fontsize = 10 + math.log(count), weight = 1000)
 
     plt.axis("off")
-    plt.show()
+    # plt.show()
+    plt.savefig('graph.png')
 
 
 sample_routes = [

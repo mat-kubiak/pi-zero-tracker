@@ -10,11 +10,14 @@ def parse_cli():
     ops.required = True
     ops.add_argument('-s', '--script', help='Execute a script by name, normally found in the \'scripts\' directory.')
     ops.add_argument('-c', '--command', help='Executes a custom command.')
+    ops.add_argument('-g', '--graph', action='store_true', help='Extract data from output file and create a graph.')
     ops.add_argument('-d', '--dummy', action='store_true', help='Do nothing.')
 
     opts = parser.add_argument_group('Options')
     opts.add_argument('-t', '--targets', default='all', help='Target hostnames separated by spaces. \'all\' by default, targets all found trackers.')
     opts.add_argument('-n', '--network', help='Overwrites network ip range used for scaning for trackers.')
+    opts.add_argument('-i', '--input', default='archive/output.txt', help='Specifies input text file with data used for --graph. \'archive/output/txt\' by default.')
+    opts.add_argument('-o', '--output', default='archive/graph.png', help='Specifies output file used for --graph. \'archive/graph.png\' by default.')
 
     opts.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
     opts.add_argument('-l', '--list_scripts', action='store_true', help='List all available scripts and exit.')

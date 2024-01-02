@@ -12,6 +12,8 @@ class paths:
 sys.path.insert(0, paths.src_dir)
 from data import *
 from network import *
+from array import *
+from plot import *
 
 def find_trackers():
     if args.network == None:
@@ -46,6 +48,13 @@ def main():
     global args, password
 
     args = parse_cli()
+    
+    if args.graph:
+        data = read_file(args.input)
+        print(extract_array(data))
+        # plot_routes()
+        exit(0)
+    
     password = read_file(paths.password_file)
     scripts = get_dir_files(paths.script_dir)
 
@@ -92,7 +101,6 @@ def main():
     elif args.command:
         command = f'cd pi-zero-tracker && {args.command}'
     
-
     threads = []
     results = {}
     for target in targets:

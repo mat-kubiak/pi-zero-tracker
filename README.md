@@ -17,7 +17,7 @@ Please create your setup with following restrictions in mind:
 1. create the text file `password.txt` containing the password to the `admin` users on trackers.
 2. install necessary libraries:
 ```
-pip install python-nmap fabric
+pip install python-nmap fabric numpy matplotlib
 ```
 3. launch the tool:
 ```
@@ -26,7 +26,7 @@ python3 toolbox.py [additional arguments]
 
 ### How to use
 ```
-usage: toolbox.py (-s SCRIPT | -c COMMAND | -d) [-t TARGETS] [-n NETWORK] [-h] [-l] [-r]
+usage: toolbox.py (-s SCRIPT | -c COMMAND | -g | -d) [-t TARGETS] [-n NETWORK] [-i INPUT] [-o OUTPUT] [-h] [-l] [-r]
 
 Command-line utility for controlling bluetooth trackers in the local network.
 
@@ -35,6 +35,7 @@ Remote Operations:
                         Execute a script by name, normally found in the 'scripts' directory.
   -c COMMAND, --command COMMAND
                         Executes a custom command.
+  -g, --graph           Extract data from output file and create a graph.
   -d, --dummy           Do nothing.
 
 Options:
@@ -42,6 +43,10 @@ Options:
                         Target hostnames separated by spaces. 'all' by default, targets all found trackers.
   -n NETWORK, --network NETWORK
                         Overwrites network ip range used for scaning for trackers.
+  -i INPUT, --input INPUT
+                        Specifies input text file with data used for --graph. 'archive/output/txt' by default.
+  -o OUTPUT, --output OUTPUT
+                        Specifies output file used for --graph. 'archive/graph.png' by default.
   -h, --help            Show this help message and exit.
   -l, --list_scripts    List all available scripts and exit.
   -r, --rebuild_cache   Forces to rebuild tracker ip cache, stored in the 'trackers.json' file.

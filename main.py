@@ -18,12 +18,12 @@ class ScanDelegate(DefaultDelegate):
             return
 
         timestamp = datetime.now().strftime(self.time_format)
-        milliseconds = datetime.now().microsecond // 1000
+        millis_str = f':{datetime.now().microsecond // 1000:03}' if args.milis else ''
         name = dev.getValueText(9)
         uuid = dev.addr
         rssi = dev.rssi
 
-        report = f'{timestamp}:{milliseconds:03}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}'
+        report = f'{timestamp}{milis_str}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}'
 
         print(report)
         with open("beacon_data.txt", "a") as file:
@@ -40,13 +40,21 @@ class info:
 def parse_cli():
     parser = argparse.ArgumentParser(
         prog='main.py',
-        description='Bluetooth tracker software for raspberry pi devices.')
+        description='Bluetooth tracker software for raspberry pi devices.',
+        add_help=False
+    )
 
-    parser.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default.')
-    parser.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
-    parser.add_argument('-w', '--whitelist', help='Whitelist of devices. If empty (default), will catch all.')
-    parser.add_argument('-dt', '--date', action='store_true', help='Includes date in output records.')
-    parser.add_argument('-s', '--separator', default=' ', help='Separator between values in a single entry. Space by default.')
+    general = parser.add_argument_group('general options')
+    general.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
+    general.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default.')
+    general.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
+    general.add_argument('-w', '--whitelist', help='Whitelist of devices. If empty (default), will catch all.')
+
+    # format
+    format = parser.add_argument_group('format')
+    format.add_argument('-dt', '--date', action='store_true', help='Includes date in output records.')
+    format.add_argument('-m', '--milis', action='store_true', help='Includes miliseconds in output records.')
+    format.add_argument('-s', '--separator', default=' ', help='Separator between values in a single entry. Space by default.')
 
     args = parser.parse_args()
     return args

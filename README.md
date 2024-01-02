@@ -1,4 +1,4 @@
-# pi-zero-tracker
+# Pi Zero Tracker
 
 Bluetooth beacon tracker for Pi Zero.
 
@@ -6,7 +6,7 @@ Software from branch `main` should run on a raspberry pi tracker device. To remo
 
 > IMPORTANT! When using the script, always use `sudo`. The Bluepy library requires root privileges to work with bluetooth. 
 
-## Get started
+## Get Started
 
 1. Install [pi imager software](https://www.raspberrypi.com/software/).
 2. during the os installation on a choosen micro sd card, click the 'edit settings' option:
@@ -19,30 +19,35 @@ Software from branch `main` should run on a raspberry pi tracker device. To remo
 5. put the microsd card into raspberry pi, connect power and turn on wifi or connect via lan. 
 6. the tracker can now be controlled manually via an ssh connection or by the `toolbox` script from another pc connected to the same network.
 
-## Help page
+## Help Page
 
 ```
 usage: main.py [-h] [-d DURATION] [-p PAUSE] [-w WHITELIST] [-dt] [-s SEPARATOR]
 
 Bluetooth tracker software for raspberry pi devices.
 
-options:
-  -h, --help            show this help message and exit
+general options:
+  -h, --help            Show this help message and exit.
   -d DURATION, --duration DURATION
                         Duration of scanning, expressed in float seconds. 120 by default.
   -p PAUSE, --pause PAUSE
                         Duration of the pause between scans, expressed in float seconds. 1 by default.
   -w WHITELIST, --whitelist WHITELIST
                         Whitelist of devices. If empty (default), will catch all.
+
+format:
   -dt, --date           Includes date in output records.
+  -m, --milis           Includes miliseconds in output records.
   -s SEPARATOR, --separator SEPARATOR
                         Separator between values in a single entry. Space by default.
 ```
 
-## Example uses
+## Example Uses
 
 ``` bash
-sudo python3 main.py -d 60 -p 0.5 # scan for 60 seconds with 0.5 s pause between scans
+sudo python3 main.py # default options, executes for 120s with 1s pause. Format doesn't include date, miliseconds and everything is separated by space.
 
-sudo python3 main.py -dt -s ',' # in the scan report, include date and set the separator to ',' (useful for automatically creatins csv documents). By default scan duration is 120 seconds and pause 1s.
+sudo python3 main.py -d 60 -p 0.5 # scan for 60 seconds with 0.5 s pause between scans.
+
+sudo python3 main.py -dt -m -s ',' # in the scan report, include date, milisecond timestamp and set the separator to ',' (useful for automatically creatins csv documents).
 ```

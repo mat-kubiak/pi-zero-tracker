@@ -1,2 +1,2 @@
 cd pi-zero-tracker
-sudo python3 main.py -h
+sudo python3 tracker.py -h

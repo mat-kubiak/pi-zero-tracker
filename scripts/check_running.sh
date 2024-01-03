@@ -1,0 +1,1 @@
+ps aux | grep python3 | grep tracker.py

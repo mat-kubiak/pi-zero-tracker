@@ -67,8 +67,8 @@ def main():
 
     scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist, args.separator))
     start_time = time.time()
-    
-    while args.duration == 0:
+
+    while float(args.duration) == 0:
         devices = scanner.scan(1)
         time.sleep(float(args.pause))
 

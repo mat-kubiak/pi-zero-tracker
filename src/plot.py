@@ -26,7 +26,6 @@ def extract_unique_points(routes):
 
 
 def plot_routes(routes):
-
     # list every unique point
     points = extract_unique_points(routes)
     print(points)
@@ -130,14 +129,14 @@ sample_routes = [
         ("sensor3", "sensor2")
     ]
 
-new_routes = [
-        ("raspPI1", "raspPI2"),
-        ("raspPI2", "raspPI1"),
-        ("raspPI1", "raspPI3"),
-        ("raspPI3", "raspPI2"),
-        ("raspPI2", "raspPI1")
-]
-
-plot_routes(sample_routes)
+# new_routes = [
+#         ("raspPI1", "raspPI2"),
+#         ("raspPI2", "raspPI1"),
+#         ("raspPI1", "raspPI3"),
+#         ("raspPI3", "raspPI2"),
+#         ("raspPI2", "raspPI1")
+# ]
+#
+# plot_routes(sample_routes)
 
 

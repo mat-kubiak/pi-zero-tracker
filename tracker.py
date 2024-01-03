@@ -65,8 +65,8 @@ def main():
     global args
     args = parse_cli()
 
-    with open("beacon_data.txt", "a") as file:
-        file.write(f'\nReport for {info.hostname} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+    # with open("beacon_data.txt", "a") as file:
+        # file.write(f'\nReport for {info.hostname} at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
 
     scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist, args.separator))
     start_time = time.time()

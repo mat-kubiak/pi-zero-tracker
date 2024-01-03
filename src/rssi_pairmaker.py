@@ -41,4 +41,6 @@ def create_connections(sensor_data):
             pairs.append((active_raspberry,))
 
     pairs.pop()
+    print(pairs)
     return(pairs)
+

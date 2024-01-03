@@ -12,7 +12,7 @@ class paths:
 sys.path.insert(0, paths.src_dir)
 from data import *
 from network import *
-from array import *
+from parse import *
 from plot import *
 
 def find_trackers():

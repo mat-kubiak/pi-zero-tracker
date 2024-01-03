@@ -40,7 +40,7 @@ class info:
 
 def parse_cli():
     parser = argparse.ArgumentParser(
-        prog='main.py',
+        prog='tracker.py',
         description='Bluetooth tracker software for raspberry pi devices.',
         add_help=False
     )

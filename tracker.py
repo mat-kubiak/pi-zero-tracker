@@ -18,7 +18,7 @@ class ScanDelegate(DefaultDelegate):
             return
 
         timestamp = datetime.now().strftime(self.time_format)
-        millis_str = f':{datetime.now().microsecond // 1000:03}' if args.milis else ''
+        milis_str = f':{datetime.now().microsecond // 1000:03}' if args.milis else ''
         name = dev.getValueText(9)
         uuid = dev.addr
         rssi = dev.rssi

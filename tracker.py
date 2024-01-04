@@ -6,9 +6,9 @@ from bluepy.btle import Scanner, DefaultDelegate
 class ScanDelegate(DefaultDelegate):
     def __init__(self, inc_date, white_ls, sepr):
         DefaultDelegate.__init__(self)
-        self.time_format = '%Y:%m:%d:%H:%M:%S' if inc_date else '%H:%M:%S'
-        self.whitelist = white_ls
         self.separator = sepr
+        self.time_format = f'%Y-%m-%d{self.separator}%H:%M:%S' if inc_date else '%H:%M:%S'
+        self.whitelist = white_ls
     
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if not isNewDev and not isNewData:
@@ -18,7 +18,7 @@ class ScanDelegate(DefaultDelegate):
             return
 
         timestamp = datetime.now().strftime(self.time_format)
-        milis_str = f':{datetime.now().microsecond // 1000:03}' if args.milis else ''
+        milis_str = f'{self.separator}{datetime.now().microsecond // 1000:03}' if args.milis else ''
         name = dev.getValueText(9)
         uuid = dev.addr
         rssi = dev.rssi

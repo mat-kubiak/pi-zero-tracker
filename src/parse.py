@@ -15,18 +15,18 @@ def extract_array(file_content):
             continue
         
         columns = line.split(',')
-        time = columns[0]
-        rssi = columns[3].split('\n')[0]
+        date = datetime.strptime(columns[0], "%Y-%m-%d").date()
+        time = datetime.strptime(columns[1], "%H:%M:%S").time()
+        time_value = datetime.combine(date, time)
+        rssi = columns[5].split('\n')[0]
 
-        reference_arr.append([time, raspberry_num, rssi])
-        time_arr.append(time)
+        reference_arr.append([time_value, raspberry_num, rssi])
+        time_arr.append(time_value)
 
     # create new array with all timestamps
     time_arr.sort()
     today = datetime.today()  # since the output file doesn't have DD:MM:YYYY value, we will use current days value
-    dtb = datetime.combine(today, datetime.strptime(time_arr[0], '%H:%M:%S').time())  # dtb - datetime begin
-    dte = datetime.combine(today, datetime.strptime(time_arr[len(time_arr) - 1], '%H:%M:%S').time())  # datetime end
-    full_time_arr = np.array(range(int(dtb.timestamp()), int(dte.timestamp() + 1)))  # array of all times from rage
+    full_time_arr = np.array(range(int(time_arr[0].timestamp()), int(time_arr[len(time_arr) - 1].timestamp() + 1)))  # array of all times from rage
 
     # Next we create our final array, for now all rssi values will be no_signal_values (they will be changed later)
     # final_arr is a 2d array, where first row is time and subsequent rows are rssi values from given raspberry devices
@@ -34,13 +34,10 @@ def extract_array(file_content):
     leng = len(full_time_arr)
     temp_arr = np.full(leng * raspberry_num, no_signal_value)
     full_time_arr = np.append(full_time_arr, temp_arr)
-    # for raspb in range(raspberry_num):
-    #     temp_arr = np.full(leng, no_signal_value)
-    #     full_time_arr = np.append(full_time_arr, temp_arr)
     final_arr = np.reshape(full_time_arr, (raspberry_num+1, -1))
 
     # Finally we replace no_signal_values from final_arr with proper values taken from reference_arr
     for i in range(len(reference_arr)):
-        final_arr[reference_arr[i][1]][int(datetime.combine(today, datetime.strptime(reference_arr[i][0], '%H:%M:%S').time()).timestamp())-full_time_arr[0]] = int(reference_arr[i][2])
+        final_arr[reference_arr[i][1]][int(reference_arr[i][0].timestamp()) - full_time_arr[0]] = reference_arr[i][2]
     return final_arr
     

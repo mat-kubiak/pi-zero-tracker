@@ -14,6 +14,7 @@ from data import *
 from network import *
 from parse import *
 from plot import *
+from rssi_pairmaker import *
 
 def find_trackers():
     if args.network == None:
@@ -51,8 +52,8 @@ def main():
     
     if args.graph:
         data = read_file(args.input)
-        print(extract_array(data))
-        # plot_routes()
+        pairs = create_connections(extract_array(data))
+        plot_routes(pairs, args.output)
         exit(0)
     
     password = read_file(paths.password_file)

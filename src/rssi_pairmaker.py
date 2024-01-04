@@ -1,7 +1,7 @@
-dummy_sensor_data = [[1704282974, 1704282975, 1704282976, 1704282977, 1704282978, 1704282979, 1704282980],
-                     [-1000, -59, -1000, -61, -1000, -59, -1000],
-                     [-58, -1000, -1000, -67, -1000, -56, -1000],
-                     [-1000, -56, -1000, -65, -1000, -1000, -54]]
+# dummy_sensor_data = [[1704282974, 1704282975, 1704282976, 1704282977, 1704282978, 1704282979, 1704282980],
+#                      [-1000, -59, -1000, -61, -1000, -59, -1000],
+#                      [-58, -1000, -1000, -67, -1000, -56, -1000],
+#                      [-1000, -56, -1000, -65, -1000, -1000, -54]]
 
 def check_rssi(args):
     if all(arg == -1000 for arg in args):
@@ -14,7 +14,6 @@ def check_rssi(args):
                 max_value = arg
                 max_arg_index = i
         return 0 if max_arg_index is None else max_arg_index + 1
-
 
 def create_connections(sensor_data):
 
@@ -41,6 +40,4 @@ def create_connections(sensor_data):
             pairs.append((active_raspberry,))
 
     pairs.pop()
-    print(pairs)
-    return(pairs)
-
+    return pairs

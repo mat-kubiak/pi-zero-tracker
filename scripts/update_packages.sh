@@ -1,1 +1,1 @@
-pip install blue-py
+sudo pip install bluepy

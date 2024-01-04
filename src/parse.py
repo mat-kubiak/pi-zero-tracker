@@ -38,6 +38,6 @@ def extract_array(file_content):
 
     # Finally we replace no_signal_values from final_arr with proper values taken from reference_arr
     for i in range(len(reference_arr)):
-        final_arr[reference_arr[i][1]][int(reference_arr[i][0].timestamp()) - full_time_arr[0]] = reference_arr[i][2]
+        final_arr[reference_arr[i][1]][int(reference_arr[i][0].timestamp()) - full_time_arr[0]] = int(reference_arr[i][2])
     return final_arr
     

@@ -1,5 +1,6 @@
-password.txt
-trackers.json
 localenv
 __pycache__
-archive
+
+config
+data
+graphs

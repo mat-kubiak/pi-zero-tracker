@@ -1,11 +1,10 @@
 import sys, os, threading, fabric
 
 sys.path.insert(0, 'src')
-from data import *
-from scripts import *
+from utils import *
 
+# change for different outcome
 run_duration = 30
-whitelist = 'iNode_Bacon iNode_Eggs iNode_Bread'
 
 def execute_remotely(results, target, target_ip, password, command):
     print(f'Target {target} started executing')
@@ -24,6 +23,7 @@ def main():
     password = read_file('password.txt')
     trackers = read_json_file('trackers.json')
     targets = trackers.keys()
+    whitelist = read_file('beacons.txt').replace('\n', ' ')
 
     command = f'''cd pi-zero-tracker
 if [ -f "beacon_data.txt" ]; then

@@ -1,25 +1,36 @@
 import sys
 
 sys.path.insert(0, 'src')
-from data import *
+from utils import *
 from parse import *
 from rssi_pairmaker import *
 from plot import *
 
 # change for different outcome
-input_file = 'archive/output.txt'
-output_file = 'graph.png'
+input_dir = 'data'
+output_dir = 'graphs'
 
 def main():
-    data = read_file(input_file)
+    beacons = read_file('config/beacons.txt').split('\n')
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-    records = extract_array(data)
-    print(f'Records: {records}\n')
+    pairs = {}
 
-    pairs = create_connections(records)
-    print(f'Pairs: {pairs}')
+    for beacon in beacons:
+        if not os.path.exists(f'{input_dir}/{beacon}.txt'):
+            print(f'Beacon {beacon} data not found, skipping')
+            continue
 
-    plot_routes(pairs, output_file)
+        data = read_file(f'{input_dir}/{beacon}.txt')
+
+        records = extract_array(data)
+        print(f'Records: {records}\n')
+
+        pairs[beacon] = create_connections(records)
+        print(f'Pairs: {pairs[beacon]}')
+
+        plot_routes(pairs[beacon], f'{output_dir}/{beacon}.png')
 
 if __name__ == '__main__':
     main()

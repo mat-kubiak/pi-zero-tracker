@@ -23,6 +23,9 @@ def extract_array(file_content):
         reference_arr.append([time_value, raspberry_num, rssi])
         time_arr.append(time_value)
 
+    if len(reference_arr) == 0:
+        return []
+
     # create new array with all timestamps
     time_arr.sort()  # sort time_arr and use first and last value to create a range of all time values
     full_time_arr = np.array(range(int(time_arr[0].timestamp() * 10), int(time_arr[len(time_arr) - 1].timestamp() * 10 + 1)))  # array of all times from rage

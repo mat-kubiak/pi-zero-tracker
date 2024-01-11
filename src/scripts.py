@@ -59,5 +59,3 @@ git fetch
 git pull'''
 
     update_pip = '''sudo pip install bluepy'''
-
-print(scripts.clear_running)

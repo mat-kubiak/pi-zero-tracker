@@ -16,7 +16,7 @@ def extract_array(file_content):
         
         columns = line.split(',')
         date = datetime.strptime(columns[0], "%Y-%m-%d").date()
-        time = datetime.strptime(columns[1], "%H:%M:%S").time()
+        time = datetime.strptime(str(columns[1] + ',' + columns[2]), "%H:%M:%S,%f").time()
         time_value = datetime.combine(date, time)
         rssi = columns[5].split('\n')[0]
 
@@ -24,9 +24,8 @@ def extract_array(file_content):
         time_arr.append(time_value)
 
     # create new array with all timestamps
-    time_arr.sort()
-    today = datetime.today()  # since the output file doesn't have DD:MM:YYYY value, we will use current days value
-    full_time_arr = np.array(range(int(time_arr[0].timestamp()), int(time_arr[len(time_arr) - 1].timestamp() + 1)))  # array of all times from rage
+    time_arr.sort()  # sort time_arr and use first and last value to create a range of all time values
+    full_time_arr = np.array(range(int(time_arr[0].timestamp() * 10), int(time_arr[len(time_arr) - 1].timestamp() * 10 + 1)))  # array of all times from rage
 
     # Next we create our final array, for now all rssi values will be no_signal_values (they will be changed later)
     # final_arr is a 2d array, where first row is time and subsequent rows are rssi values from given raspberry devices
@@ -38,6 +37,6 @@ def extract_array(file_content):
 
     # Finally we replace no_signal_values from final_arr with proper values taken from reference_arr
     for i in range(len(reference_arr)):
-        final_arr[reference_arr[i][1]][int(reference_arr[i][0].timestamp()) - full_time_arr[0]] = int(reference_arr[i][2])
+        final_arr[reference_arr[i][1]][int(reference_arr[i][0].timestamp() * 10) - full_time_arr[0]] = int(reference_arr[i][2])
     return final_arr
     

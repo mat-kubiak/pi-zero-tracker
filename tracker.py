@@ -12,6 +12,7 @@ class ScanDelegate(DefaultDelegate):
         if not isNewDev and not isNewData:
             return
 
+        # an empty whitelist will catch all devices
         if self.whitelist != None and not dev.getValueText(9) in self.whitelist.split():
             return
 
@@ -25,15 +26,15 @@ class ScanDelegate(DefaultDelegate):
 
         if not args.disable_output:
             print(report)
+
+        # record is appended to file after every discovery, so the data won't be lost when the program fails
         with open("beacon_data.txt", "a") as file:
             file.write(report + '\n')
 
 class info:
     script_dir = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.join(script_dir, 'log')
-
     hostname = socket.gethostname()
-    hostname = 'rasp12345' # uncomment to mimic pi (if not testing!!)
     host_number = int(hostname[4:])
 
 def parse_cli():

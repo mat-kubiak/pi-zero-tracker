@@ -20,10 +20,10 @@ def execute_remotely(results, target, target_ip, password, command):
 def main():
     
     # INITIALIZE
-    password = read_file('password.txt')
-    trackers = read_json_file('trackers.json')
+    password = read_file('config/password.txt')
+    trackers = read_json_file('config/trackers.json')
     targets = trackers.keys()
-    whitelist = read_file('beacons.txt').replace('\n', ' ')
+    whitelist = read_file('config/beacons.txt').replace('\n', ' ')
 
     command = f'''cd pi-zero-tracker
 if [ -f "beacon_data.txt" ]; then

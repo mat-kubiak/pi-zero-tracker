@@ -102,6 +102,14 @@ def main():
     elif args.command:
         command = f'cd pi-zero-tracker && {args.command}'
     
+    detach = bool(str(args.script) == 'run_detach')
+    if detach:
+        for target in targets:
+            c = Connection(trackers[target], user='admin', connect_kwargs={"password": password})
+            c.run(command, pty=False, background=True)
+            print(f'{target} detached')
+        exit(0)
+
     threads = []
     results = {}
     for target in targets:

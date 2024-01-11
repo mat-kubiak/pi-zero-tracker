@@ -22,11 +22,11 @@ Software from branch `main` should run on a raspberry pi tracker device. To remo
 ## Help Page
 
 ```
-usage: tracker.py [-h] [-d DURATION] [-p PAUSE] [-w WHITELIST] [-do] [-dt] [-m] [-s SEPARATOR]
+usage: tracker.py [-h] [-d DURATION] [-p PAUSE] [-w WHITELIST] [-do]
 
 Bluetooth tracker software for raspberry pi devices.
 
-general options:
+options:
   -h, --help            Show this help message and exit.
   -d DURATION, --duration DURATION
                         Duration of scanning, expressed in float seconds. 120 by default. If set to 0, it will run forever.
@@ -36,22 +36,14 @@ general options:
                         Whitelist of devices. If empty (default), will catch all.
   -do, --disable_output
                         Will disable output to console.
-
-format:
-  -dt, --date           Includes date in output records.
-  -m, --milis           Includes miliseconds in output records.
-  -s SEPARATOR, --separator SEPARATOR
-                        Separator between values in a single entry. Space by default.
 ```
 
 ## Example Uses
 
 ``` bash
-sudo python3 tracker.py # default options, executes for 120s with 1s pause. Format doesn't include date, miliseconds and everything is separated by space.
+sudo python3 tracker.py # default options, executes for 120s with 1s pause.
 
 sudo python3 tracker.py -d 60 -p 0.5 # scan for 60 seconds with 0.5 s pause between scans.
 
 sudo python3 tracker.py -d 0 -do # run indefinitely without printing output.
-
-sudo python3 tracker.py -dt -m -s ',' # in the scan report, include date, milisecond timestamp and set the separator to ',' (useful for automatically creatins csv documents).
 ```

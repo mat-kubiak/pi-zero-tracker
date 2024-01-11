@@ -4,10 +4,8 @@ from datetime import datetime
 from bluepy.btle import Scanner, DefaultDelegate
 
 class ScanDelegate(DefaultDelegate):
-    def __init__(self, inc_date, white_ls, sepr):
+    def __init__(self, white_ls):
         DefaultDelegate.__init__(self)
-        self.separator = sepr
-        self.time_format = f'%Y-%m-%d{self.separator}%H:%M:%S' if inc_date else '%H:%M:%S'
         self.whitelist = white_ls
     
     def handleDiscovery(self, dev, isNewDev, isNewData):
@@ -17,13 +15,13 @@ class ScanDelegate(DefaultDelegate):
         if self.whitelist != None and not dev.getValueText(9) in self.whitelist.split():
             return
 
-        timestamp = datetime.now().strftime(self.time_format)
-        milis_str = f'{self.separator}{datetime.now().microsecond // 1000:03}' if args.milis else ''
+        timestamp = datetime.now().strftime('%Y-%m-%d,%H:%M:%S')
+        milis = f'{datetime.now().microsecond // 1000:03}'
         name = dev.getValueText(9)
         uuid = dev.addr
         rssi = dev.rssi
 
-        report = f'{timestamp}{milis_str}{self.separator}{name}{self.separator}{uuid}{self.separator}{rssi}'
+        report = f'{timestamp},{milis},{name},{uuid},{rssi}'
 
         if not args.disable_output:
             print(report)
@@ -45,18 +43,11 @@ def parse_cli():
         add_help=False
     )
 
-    general = parser.add_argument_group('general options')
-    general.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
-    general.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default. If set to 0, it will run forever.')
-    general.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
-    general.add_argument('-w', '--whitelist', help='Whitelist of devices. If empty (default), will catch all.')
-    general.add_argument('-do', '--disable_output', action='store_true', help='Will disable output to console.')
-
-    # format
-    format = parser.add_argument_group('format')
-    format.add_argument('-dt', '--date', action='store_true', help='Includes date in output records.')
-    format.add_argument('-m', '--milis', action='store_true', help='Includes miliseconds in output records.')
-    format.add_argument('-s', '--separator', default=' ', help='Separator between values in a single entry. Space by default.')
+    parser.add_argument('-h', '--help', action='help', help='Show this help message and exit.')
+    parser.add_argument('-d', '--duration', default='120', help='Duration of scanning, expressed in float seconds. 120 by default. If set to 0, it will run forever.')
+    parser.add_argument('-p', '--pause', default='1', help='Duration of the pause between scans, expressed in float seconds. 1 by default.')
+    parser.add_argument('-w', '--whitelist', help='Whitelist of devices. If empty (default), will catch all.')
+    parser.add_argument('-do', '--disable_output', action='store_true', help='Will disable output to console.')
 
     args = parser.parse_args()
     return args
@@ -65,7 +56,7 @@ def main():
     global args
     args = parse_cli()
 
-    scanner = Scanner().withDelegate(ScanDelegate(args.date, args.whitelist, args.separator))
+    scanner = Scanner().withDelegate(ScanDelegate(args.whitelist))
     start_time = time.time()
 
     while float(args.duration) == 0:

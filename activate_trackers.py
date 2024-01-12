@@ -37,7 +37,7 @@ sudo python3 tracker.py -d {duration_seconds} -w "{whitelist}"'''
     threads = []
     results = {}
     for target in targets:
-        t = threading.Thread(target=execute_remotely, args=(results, target, trackers[target], password, command))
+        t = threading.Thread(target=execute_remotely, args=(results, target, trackers[target], password, command), auto_add_policy=True)
         threads.append(t)
         t.start()
 

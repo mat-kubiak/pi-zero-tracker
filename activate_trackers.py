@@ -20,7 +20,7 @@ def execute_remotely(results, target, target_ip, password, command):
 def main():
     
     # INITIALIZE
-    password = read_file('config/password.txt')
+    password = read_file('config/password.txt').strip()
     trackers = read_json_file('config/trackers.json')
     targets = trackers.keys()
     whitelist = read_file('config/beacons.txt').replace('\n', ' ')

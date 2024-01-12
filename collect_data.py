@@ -2,7 +2,7 @@ import sys, os, threading
 from fabric import *
 
 sys.path.insert(0, 'src')
-from utils import *
+from data import *
 
 # change for different outcome
 output_dir = 'data'

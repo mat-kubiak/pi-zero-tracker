@@ -1,10 +1,10 @@
 import sys, os, threading, fabric
 
 sys.path.insert(0, 'src')
-from utils import *
+from data import *
 
 # change for different outcome
-run_duration = 30
+duration_seconds = 30
 
 def execute_remotely(results, target, target_ip, password, command):
     print(f'Target {target} started executing')
@@ -31,7 +31,7 @@ if [ -f "beacon_data.txt" ]; then
     cat "beacon_data.txt" >> "archive.txt"
     rm -f "beacon_data.txt"
 fi
-sudo python3 tracker.py -d {run_duration} -w "{whitelist}"'''
+sudo python3 tracker.py -d {duration_seconds} -w "{whitelist}"'''
 
     # RUN
     threads = []

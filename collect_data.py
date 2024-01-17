@@ -5,10 +5,8 @@ sys.path.insert(0, 'src')
 from data import *
 
 config = read_json_file('config.json')
-
 password = config['password']
 output_dir = config['data_directory']
-
 trackers = config['trackers']
 targets = sorted(list(trackers.keys()))
 beacons = sorted(config['beacons'])
@@ -16,7 +14,6 @@ beacons = sorted(config['beacons'])
 command = 'cd pi-zero-tracker && cat beacon_data.txt'
 
 def main():
-    # RUN
     results = {}
     for target in targets:
         c = Connection(host=trackers[target], user='admin', connect_kwargs={'password': password})
@@ -25,7 +22,6 @@ def main():
         print(f'{target} data collected')
         print(results[target])
 
-    # SPLIT BY BEACONS
     output_files = {}
     for beacon in beacons:
         output_files[beacon] = ''
@@ -38,7 +34,6 @@ def main():
                 if beacon in line:
                     output_files[beacon] += f'{line}\n'
     
-    # SAVE
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     for beacon in beacons:

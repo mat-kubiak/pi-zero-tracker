@@ -7,10 +7,8 @@ from rssi_pairmaker import *
 from plot import *
 
 config = read_json_file('config.json')
-
 input_dir = config['data_directory']
 output_dir = config['graph_directory']
-
 trackers = sorted(list(config['trackers'].keys()))
 beacons = sorted(config['beacons'])
 

@@ -12,31 +12,28 @@ output_dir = config['graph_directory']
 trackers = sorted(list(config['trackers'].keys()))
 beacons = sorted(config['beacons'])
 
+distances = {}
+for key in config['distances'].keys():
+	rasps = key.split('-')
+	first = trackers.index(rasps[0])
+	second = trackers.index(rasps[1])
+
+	value = config['distances'][key]
+	distances[f'{first}-{second}'] = value
+	distances[f'{second}-{first}'] = value
+
 def main():
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 
-	distances = {}
-	for key in config['distances'].keys():
-
-		rasps = key.split('-')
-		first = trackers.index(rasps[0])
-		second = trackers.index(rasps[1])
-
-		value = config['distances'][key]
-		distances[f'{first}-{second}'] = value
-		distances[f'{second}-{first}'] = value
-
 	total_pairs = []
 	graphs_completed = 0
-
 	for beacon in beacons:
 		if not os.path.exists(f'{input_dir}/{beacon}.txt'):
 			print(f'Warning: Beacon {beacon} data file not found, skipping ...')
 			continue
 
 		data = read_file(f'{input_dir}/{beacon}.txt')
-
 		records = extract_array(data)
 		if len(records) == 0:
 			print(f'Warning: Data file for beacon {beacon} is empty. skipping ...')
@@ -48,7 +45,6 @@ def main():
 			continue
 
 		total_pairs.extend(pairs)
-
 		plot_routes(pairs, f'{output_dir}/{beacon}.png', trackers)
 		graphs_completed += 1
 	

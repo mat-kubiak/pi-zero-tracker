@@ -31,7 +31,7 @@ minimal_distance_between_sensors = 10  # meters
 minimal_travel_time = int((minimal_distance_between_sensors / maximal_motion_speed) * 10)  # in tens of a second
 
 
-def create_connections(sensor_data):
+def create_connections(sensor_data, distances):
 
     pairs = []
     rssi_values = []
@@ -73,4 +73,4 @@ dummy_sensor_data = [[17042829740, 17042829750, 17042829760, 17042829770, 170428
                      [-1000, -56, -1000, -65, -1000, -1000, -54]
                      ]
 
-print(create_connections(dummy_sensor_data))
+# print(create_connections(dummy_sensor_data))

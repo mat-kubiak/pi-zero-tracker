@@ -10,10 +10,22 @@ config = read_json_file('config.json')
 beacons = config['beacons']
 input_dir = config['data_directory']
 output_dir = config['graph_directory']
+trackers = list(config['trackers'].keys())
 
 def main():
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
+
+	distances = {}
+	for key in config['distances'].keys():
+		
+		rasps = key.split('-')
+		first = trackers.index(rasps[0])
+		second = trackers.index(rasps[1])
+
+		value = config['distances'][key]
+		distances[f'{first}-{second}'] = value
+		distances[f'{second}-{first}'] = value
 
 	total_pairs = []
 	graphs_completed = 0
@@ -30,7 +42,7 @@ def main():
 			print(f'Warning: Data file for beacon {beacon} is empty. skipping ...')
 			continue
 
-		pairs = create_connections(records)
+		pairs = create_connections(records, distances)
 		if len(pairs) == 0:
 			print(f'Warning: Could not find any connections for beacon {beacon}. skipping ...')
 			continue

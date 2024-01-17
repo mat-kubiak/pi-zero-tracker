@@ -51,7 +51,7 @@ def main():
 
 		total_pairs.extend(pairs)
 
-		plot_routes(pairs, f'{output_dir}/{beacon}.png')
+		plot_routes(pairs, f'{output_dir}/{beacon}.png', trackers)
 		graphs_completed += 1
 	
 	if graphs_completed < 2:

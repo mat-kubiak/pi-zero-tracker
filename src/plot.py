@@ -25,7 +25,7 @@ def extract_unique_points(routes):
     return unique_points
 
 
-def plot_routes(routes, output_path):
+def plot_routes(routes, output_path, trackers):
     # list every unique point
     points = extract_unique_points(routes)
 
@@ -60,7 +60,7 @@ def plot_routes(routes, output_path):
     # Draw points
     for point, (x, y) in point_coordinates.items():
         ax.plot(x, y, 'o', markersize=point_size, label=point)
-        ax.text(x, y+0.06, point, ha='center', va='center')
+        ax.text(x, y+0.06, trackers[point-1], ha='center', va='center')
 
     # Calculate routes
     for route, count in route_counts.items():

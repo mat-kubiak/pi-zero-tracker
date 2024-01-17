@@ -3,8 +3,20 @@ import sys, os, threading, fabric
 sys.path.insert(0, 'src')
 from data import *
 
-# change for different outcome
-duration_seconds = 30
+config = read_json_file('config.json')
+trackers = config['trackers']
+targets = trackers.keys()
+duration = float(config['duration'])
+whitelist = ' '.join(config['beacons'])
+password = config['password']
+
+command = f'''cd pi-zero-tracker
+if [ -f "beacon_data.txt" ]; then
+    echo "" >> "archive.txt"
+    cat "beacon_data.txt" >> "archive.txt"
+    rm -f "beacon_data.txt"
+fi
+sudo python3 tracker.py -d {duration} -w "{whitelist}"'''
 
 def execute_remotely(results, target, target_ip, password, command):
     print(f'Target {target} started executing')
@@ -18,22 +30,6 @@ def execute_remotely(results, target, target_ip, password, command):
     print(f'Target {target} finished executing')
 
 def main():
-    
-    # INITIALIZE
-    password = read_file('config/password.txt').strip()
-    trackers = read_json_file('config/trackers.json')
-    targets = trackers.keys()
-    whitelist = read_file('config/beacons.txt').replace('\n', ' ')
-
-    command = f'''cd pi-zero-tracker
-if [ -f "beacon_data.txt" ]; then
-    echo "" >> "archive.txt"
-    cat "beacon_data.txt" >> "archive.txt"
-    rm -f "beacon_data.txt"
-fi
-sudo python3 tracker.py -d {duration_seconds} -w "{whitelist}"'''
-
-    # RUN
     threads = []
     results = {}
     for target in targets:

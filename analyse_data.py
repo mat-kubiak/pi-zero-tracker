@@ -6,13 +6,12 @@ from parse import *
 from rssi_pairmaker import *
 from plot import *
 
-# change for different outcome
-input_dir = 'data'
-output_dir = 'graphs'
-overall_graph = 'graphs/breakfast.png'
+config = read_json_file('config.json')
+beacons = config['beacons']
+input_dir = config['data_directory']
+output_dir = config['graph_directory']
 
 def main():
-	beacons = read_file('config/beacons.txt').split('\n')
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 
@@ -44,7 +43,7 @@ def main():
 	if graphs_completed < 2:
 		print(f'Warning: no new data for overall graph, skipping ...')
 	else:
-		plot_routes(total_pairs, overall_graph)
+		plot_routes(total_pairs, output_dir + '/breakfast.png')
 		graphs_completed += 1
 
 	print(f'Graphs created: {graphs_completed} out of {len(beacons) + 1}')

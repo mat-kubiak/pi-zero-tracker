@@ -14,27 +14,12 @@ Please create your setup with following restrictions in mind:
 
 ### Software Setup
 
-1. create a folder `config` with files inside:
-   * `password.txt` containing the password to the `admin` users on trackers.
-   * `trackers.json` containing a list of tracker ips using the format:
-    ```json
-    {
-      "rasp1":"192.168.0.1",
-      "rasp2":"192.168.0.2",
-      "rasp3":"192.168.0.3"
-    }
-    ```
-   * `beacons.txt` containing the list of beacon names in separate lines, i.e.:
-    ```
-    iNode_Bacon
-    iNode_Eggs
-    iNode_Bread
-    ```
+1. modify the default `config.json` file to fit your needs, include info about password, trackers and beacons.
 2. install necessary libraries:
 ``` bash
 pip install fabric numpy matplotlib
 ```
-3. launch one of the scripts:
+1. launch one of the scripts:
 ``` bash
 python3 activate_trackers.py # run the program on trackers
 python3 collect_data.py # collect data from trackers and save it in a folder

@@ -1,0 +1,18 @@
+{   
+    "password": "",
+    "duration": 30.0,
+    "data_directory": "data",
+    "graph_directory": "graphs",
+    "trackers": {
+        "rasp1":"0.0.0.0",
+        "rasp2":"0.0.0.0"
+    },
+    "beacons": [
+        "iNode_Bacon",
+        "iNode_Eggs",
+        "iNode_Bread"
+    ],
+    "distances": {
+        "rasp1-rasp2": 1.0
+    }
+}

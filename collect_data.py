@@ -5,11 +5,14 @@ sys.path.insert(0, 'src')
 from data import *
 
 config = read_json_file('config.json')
+
 password = config['password']
 output_dir = config['data_directory']
+
 trackers = config['trackers']
-targets = trackers.keys()
-beacons = config['beacons']
+targets = sorted(list(trackers.keys()))
+beacons = sorted(config['beacons'])
+
 command = 'cd pi-zero-tracker && cat beacon_data.txt'
 
 def main():

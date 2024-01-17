@@ -7,10 +7,12 @@ from rssi_pairmaker import *
 from plot import *
 
 config = read_json_file('config.json')
-beacons = config['beacons']
+
 input_dir = config['data_directory']
 output_dir = config['graph_directory']
-trackers = list(config['trackers'].keys())
+
+trackers = sorted(list(config['trackers'].keys()))
+beacons = sorted(config['beacons'])
 
 def main():
 	if not os.path.exists(output_dir):
@@ -18,7 +20,7 @@ def main():
 
 	distances = {}
 	for key in config['distances'].keys():
-		
+
 		rasps = key.split('-')
 		first = trackers.index(rasps[0])
 		second = trackers.index(rasps[1])

@@ -5,7 +5,7 @@ from data import *
 
 config = read_json_file('config.json')
 trackers = config['trackers']
-targets = trackers.keys()
+targets = sorted(list(trackers.keys()))
 duration = float(config['duration'])
 whitelist = ' '.join(config['beacons'])
 password = config['password']

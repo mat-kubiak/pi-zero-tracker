@@ -54,7 +54,7 @@ def create_connections(sensor_data, distances, max_bc_speed):
         if pairs[last_pair_index][0] != active_raspberry and active_raspberry:
             # last signal is not the same as new one -> beacon moves closer to different raspberry
             if sensor_data[0][i] - last_recorded_signal_timestamp > int(
-                    (distances['' + last_active_raspberry + '-' + active_raspberry] / max_bc_speed) * 10):
+                (distances[f'{last_active_raspberry-1}-{active_raspberry-1}'] / max_bc_speed) * 10):
                 # if move happened too fast it is regarded as an error (caused by signal spike)
 
                 pairs[last_pair_index] += (active_raspberry,)

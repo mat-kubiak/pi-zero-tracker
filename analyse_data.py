@@ -14,13 +14,14 @@ beacons = sorted(config['beacons'])
 
 distances = {}
 for key in config['distances'].keys():
-	rasps = key.split('-')
-	first = trackers.index(rasps[0])
-	second = trackers.index(rasps[1])
-
+	first, second = [trackers.index(part) for part in key.split('-')]
 	value = config['distances'][key]
+
 	distances[f'{first}-{second}'] = value
 	distances[f'{second}-{first}'] = value
+
+for i in range(len(trackers)):
+	distances[f'{i}-{i}'] = 0.
 
 maximal_beacon_speed = float(config['maximal_beacon_speed(m/s)'])
 

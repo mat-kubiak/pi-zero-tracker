@@ -1,10 +1,10 @@
 {   
 	"password": "",
 	"duration": 30.0,
+	"max_beacon_speed": 0.5,
 	"data_directory": "data",
 	"graph_directory": "graphs",
 	"trackers": {},
 	"beacons": [],
-	"distances": {},
-	"maximal_beacon_speed(m/s)": 3.5
+	"distances": {}
 }

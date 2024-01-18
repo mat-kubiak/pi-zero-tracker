@@ -1,17 +1,3 @@
-# dummy_sensor_data = [[17042829740, 17042829750, 17042829760, 17042829770, 17042829780, 17042829790, 17042829800],
-#                      [-1000, -59, -1000, -61, -1000, -59, -1000],
-#                      [-58, -1000, -1000, -67, -1000, -56, -1000],
-#                      [-1000, -56, -1000, -65, -1000, -1000, -54]
-#                      ]
-#
-#   dummy data structure:   [[time values, ...],
-#                             [first sensor data, ...],
-#                             [second sensor data, ...], ...
-#                           ]
-#
-#                           sensor_data[raspberry_no][measurement_no]
-#                           raspberry_no == 0 -> time_value
-#
 
 def return_strongest_index(args):
     if all(arg == -1000 for arg in args):
@@ -72,4 +58,3 @@ def create_connections(sensor_data, distances, max_bc_speed):
 
     pairs.pop()
     return pairs
-

@@ -23,7 +23,7 @@ for key in config['distances'].keys():
 for i in range(len(trackers)):
 	distances[f'{i}-{i}'] = 0.
 
-maximal_beacon_speed = float(config['maximal_beacon_speed(m/s)'])
+maximal_beacon_speed = float(config['max_beacon_speed'])
 
 def main():
 	if not os.path.exists(output_dir):

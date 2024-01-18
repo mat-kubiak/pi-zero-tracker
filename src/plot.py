@@ -55,8 +55,6 @@ def plot_routes(routes, output_path, trackers):
     # Dictionary to store coordinates of each point
     point_coordinates = {point: (x, y) for point, x, y in zip(points, circle_x, circle_y)}
 
-    # print(point_coordinates)
-
     # Draw points
     for point, (x, y) in point_coordinates.items():
         ax.plot(x, y, 'o', markersize=point_size, label=point)
@@ -106,31 +104,4 @@ def plot_routes(routes, output_path, trackers):
         ax.text(text_x, text_y, str(count), ha='center', va='center', fontsize = 10 + math.log(count), weight = 1000)
 
     plt.axis("off")
-    # plt.show()
     plt.savefig(output_path)
-
-# sample_routes = [
-#         ("sensor1", "sensor2"),
-#         ("sensor2", "sensor1"),
-#         ("sensor1", "sensor6"),
-#         ("sensor1", "sensor6"),
-#         ("sensor6", "sensor5"),
-#         ("sensor5", "sensor6"),
-#         ("sensor6", "sensor5"),
-#         ("sensor5", "sensor2"),
-#         ("sensor5", "sensor3"),
-#         ("sensor5", "sensor4"),
-#         ("sensor5", "sensor4"),
-#         ("sensor4", "sensor3"),
-#         ("sensor3", "sensor2"),
-#         ("sensor3", "sensor2"),
-#         ("sensor3", "sensor2")
-#     ]
-
-# new_routes = [
-#         ("raspPI1", "raspPI2"),
-#         ("raspPI2", "raspPI1"),
-#         ("raspPI1", "raspPI3"),
-#         ("raspPI3", "raspPI2"),
-#         ("raspPI2", "raspPI1")
-# ]

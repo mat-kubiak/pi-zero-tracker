@@ -26,12 +26,9 @@ def return_strongest_index(args):
         return 0 if max_arg_index is None else max_arg_index + 1
 
 
-maximal_motion_speed = 3.5  # meters / second
-minimal_distance_between_sensors = 10  # meters
-minimal_travel_time = int((minimal_distance_between_sensors / maximal_motion_speed) * 10)  # in tens of a second
 
 
-def create_connections(sensor_data, distances):
+def create_connections(sensor_data, distances, max_bc_speed):
 
     pairs = []
     rssi_values = []
@@ -42,9 +39,9 @@ def create_connections(sensor_data, distances):
     for j in range(1, len(sensor_data)):
         rssi_values.append(sensor_data[j][0])
 
-    active_raspberry = return_strongest_index(rssi_values)
+    last_active_raspberry = return_strongest_index(rssi_values)
     # active raspberry = closest to the beacon at the moment
-    pairs.append((active_raspberry,))
+    pairs.append((last_active_raspberry,))
 
     last_pair_index = 0
     for i in range(1, len(sensor_data[0])):
@@ -53,15 +50,17 @@ def create_connections(sensor_data, distances):
             rssi_values.append(sensor_data[j][i])
 
         active_raspberry = return_strongest_index(rssi_values)
-        if sensor_data[0][i] - last_recorded_signal_timestamp > minimal_travel_time:
-            # if move happened too fast it is regarded as an error (caused by signal spike)
-            if pairs[last_pair_index][0] != active_raspberry and active_raspberry:
-                # last signal is not the same as new one -> beacon moves closer to different raspberry
+
+        if pairs[last_pair_index][0] != active_raspberry and active_raspberry:
+            # last signal is not the same as new one -> beacon moves closer to different raspberry
+            if sensor_data[0][i] - last_recorded_signal_timestamp > int(
+                    (distances['' + last_active_raspberry + '-' + active_raspberry] / max_bc_speed) * 10):
+                # if move happened too fast it is regarded as an error (caused by signal spike)
+
                 pairs[last_pair_index] += (active_raspberry,)
                 last_pair_index += 1
                 pairs.append((active_raspberry,))
                 last_recorded_signal_timestamp = sensor_data[0][i]
-                
 
     pairs.pop()
     return pairs

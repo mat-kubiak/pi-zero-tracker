@@ -22,6 +22,8 @@ for key in config['distances'].keys():
 	distances[f'{first}-{second}'] = value
 	distances[f'{second}-{first}'] = value
 
+maximal_beacon_speed = float(config['maximal_beacon_speed(m/s)'])
+
 def main():
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
@@ -39,7 +41,7 @@ def main():
 			print(f'Warning: Data file for beacon {beacon} is empty. skipping ...')
 			continue
 
-		pairs = create_connections(records, distances)
+		pairs = create_connections(records, distances, maximal_beacon_speed)
 		if len(pairs) == 0:
 			print(f'Warning: Could not find any connections for beacon {beacon}. skipping ...')
 			continue

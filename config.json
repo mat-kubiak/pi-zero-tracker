@@ -1,10 +1,27 @@
 {   
-	"password": "",
-	"duration": 30.0,
-	"max_beacon_speed": 0.5,
+	"password": "Literalnie234",
+	"duration": 5.0,
+	"max_beacon_speed": 3,
 	"data_directory": "data",
 	"graph_directory": "graphs",
-	"trackers": {},
-	"beacons": [],
-	"distances": {}
+	"trackers": {
+		"rasp1": "192.168.150.15",
+		"rasp2": "192.168.150.216",
+		"rasp3": "192.168.150.168",
+		"rasp4": "192.168.150.156"
+	},
+	"beacons": [
+		"iNode_Eggs",
+		"iNode_Bread"
+	],
+	"distances": {
+		"rasp1-rasp2": 10,
+		"rasp2-rasp3": 5,
+		"rasp3-rasp4": 5,
+
+		"rasp1-rasp3": 7.07,
+		"rasp2-rasp4": 7.07,
+
+		"rasp1-rasp4": 11.18
+	}
 }

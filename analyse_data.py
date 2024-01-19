@@ -54,7 +54,7 @@ def main():
 	if graphs_completed < 2:
 		print(f'Warning: no new data for overall graph, skipping ...')
 	else:
-		plot_routes(total_pairs, output_dir + '/breakfast.png')
+		plot_routes(total_pairs, output_dir + '/breakfast.png', trackers)
 		graphs_completed += 1
 
 	print(f'Graphs created: {graphs_completed} out of {len(beacons) + 1}')
